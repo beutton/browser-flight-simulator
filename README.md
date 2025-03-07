@@ -1,9 +1,9 @@
 # Browser Flight Simulator
 
-![Image](https://github.com/user-attachments/assets/3598fe21-b26c-480f-b122-3fe72a469e90)
-![Image](https://github.com/user-attachments/assets/955939df-ada0-4600-9456-168c4ab52220)
-![Image](https://github.com/user-attachments/assets/b0d9178e-977e-4e1f-a39e-3dc8fb8bf3ff)
-![Image](https://github.com/user-attachments/assets/b8511de3-e93a-4422-96ef-3f53ac1026a3)
+![Image](https://github.com/user-attachments/assets/d1e1a3e2-8d88-409e-a64e-6c38f772b632)
+![Image](https://github.com/user-attachments/assets/5aa6660f-7a64-484e-9c02-f0f90251d827)
+![Image](https://github.com/user-attachments/assets/8d37b078-7d75-418c-b547-ff48b6864c76)
+![Image](https://github.com/user-attachments/assets/9b33a3c4-5f67-4cc5-95d0-0ccd18978677)
 
 Watch the full video here: https://www.youtube.com/watch?v=iTNqfcdOCow
 
