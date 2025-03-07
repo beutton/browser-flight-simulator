@@ -93,7 +93,7 @@ This a slight fork of the absolutely amazing project [Geospatial Rendering in Th
 2. bun install -g pnpm
 3. pnpm install
 4. pnpm storybook
-5. http://0.0.0.0:4400/
+5. http://localhost:4400/
   
 # Geospatial Rendering in Three.js
 
