@@ -1,3 +1,98 @@
+# Browser Flight Simulator
+
+This a slight fork of the absolutely amazing project [Geospatial Rendering in Three.js](https://github.com/takram-design-engineering/three-geospatial) by [Shota Matsuda](https://github.com/shotamatsuda)
+
+# Enhancements
+
+- **Improved movement**: wasd movement is way smoother (can adjust sensitivity in filter menu)
+- **Camera control** - Arrow keys  (can adjust sensitivity in filter menu)
+- **70 cities**
+
+# Setup
+
+1. Sign up for Google Cloud to get a Maps Tiles API, it's free! Then add it to .env: STORYBOOK_GOOGLE_MAP_API_KEY=<your-key>
+2. bun install -g pnpm
+3. pnpm install
+4. pnpm storybook
+5. http://0.0.0.0:4400/
+
+# 70 cities
+
+- Tokyo
+- Fuji (assuming this refers to a city or area near Mount Fuji, like Fujiyoshida or Fujinomiya)
+- London
+- New York City
+- Los Angeles
+- Chicago
+- Houston
+- Phoenix
+- Philadelphia
+- San Antonio
+- San Diego
+- Dallas
+- San Jose
+- Austin
+- Jacksonville
+- Fort Worth
+- Columbus
+- Charlotte
+- Indianapolis
+- San Francisco
+- Seattle
+- Denver
+- Washington DC
+- Nashville
+- Oklahoma City
+- Boston
+- El Paso
+- Portland
+- Las Vegas
+- Memphis
+- Detroit
+- Baltimore
+- Louisville
+- Istanbul
+- Moscow
+- Paris
+- Berlin
+- Madrid
+- Rome
+- Kyiv
+- Vienna
+- Hamburg
+- Warsaw
+- Budapest
+- Barcelona
+- Munich
+- Milan
+- Prague
+- Sofia
+- Brussels
+- Amsterdam
+- Athens
+- Stockholm
+- Tokyo City (distinct from "Tokyo" above, based on naming)
+- Shanghai
+- Beijing
+- Delhi City
+- Mumbai City
+- Guangzhou
+- Shenzhen
+- Seoul City
+- Jakarta
+- Chengdu
+- Karachi
+- Bangkok
+- Ho Chi Minh City
+- Kolkata
+- Manila
+- Tianjin
+- Bangalore
+- Tehran
+- Lahore
+- Osaka
+
+  
 # Geospatial Rendering in Three.js
 
 This repository hosts a prototype of the rendering aspect of a Web GIS engine. It’s part of Takram’s client projects, commissioned by a company selected by the Cabinet Office of Japan under the SBIR (Small/Startup Business Innovation Research) program.
