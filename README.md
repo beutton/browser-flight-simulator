@@ -16,10 +16,10 @@ This a slight fork of the absolutely amazing project [Geospatial Rendering in Th
 4. pnpm storybook
 5. http://0.0.0.0:4400/
 
-# 70 cities
+# 70 cities in Google 3D
 
 - Tokyo
-- Fuji (assuming this refers to a city or area near Mount Fuji, like Fujiyoshida or Fujinomiya)
+- Fuji
 - London
 - New York City
 - Los Angeles
@@ -71,7 +71,7 @@ This a slight fork of the absolutely amazing project [Geospatial Rendering in Th
 - Amsterdam
 - Athens
 - Stockholm
-- Tokyo City (distinct from "Tokyo" above, based on naming)
+- Tokyo City
 - Shanghai
 - Beijing
 - Delhi City
