@@ -15,6 +15,7 @@ export { useKeyboardSpeedControls } from './useKeyboardSpeedControls'
 export { useLocalDateControls } from './useLocalDateControls'
 export { useLocationControls } from './useLocationControls'
 export { usePovControls } from './usePovControls'
+export { usePovSpeedControls } from './usePovSpeedControls'
 export { useToneMappingControls } from './useToneMappingControls'
 
 // Constants and utilities
