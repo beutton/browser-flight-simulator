@@ -1,8 +1,11 @@
 # Browser Flight Simulator
 
-Video here: https://x.com/benbeutton/status/1897931865463365712
+![Image](https://github.com/user-attachments/assets/3598fe21-b26c-480f-b122-3fe72a469e90)
+![Image](https://github.com/user-attachments/assets/955939df-ada0-4600-9456-168c4ab52220)
+![Image](https://github.com/user-attachments/assets/fb3ff1e3-90c9-43d4-b740-edb9d5a77a3a)
+![Image](https://github.com/user-attachments/assets/b8511de3-e93a-4422-96ef-3f53ac1026a3)
 
-This a slight fork of the absolutely amazing project [Geospatial Rendering in Three.js](https://github.com/takram-design-engineering/three-geospatial) by [Shota Matsuda](https://github.com/shotamatsuda)
+This a fork of the absolutely amazing project [Geospatial Rendering in Three.js](https://github.com/takram-design-engineering/three-geospatial) by [Shota Matsuda](https://github.com/shotamatsuda)
 
 # Enhancements
 
