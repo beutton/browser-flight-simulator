@@ -132,7 +132,7 @@ export const KeyboardNavigationHelper: FC<KeyboardNavigationHelperProps> = ({
       }
       
       // Set text and styles based on initialization status and active state
-      let statusText = customText || 'WASD + Space/C to fly, Arrow keys to rotate camera'
+      let statusText = customText || `WASD + Space/C to fly (speed: ${speed}), Arrow keys to rotate (speed: ${rotationSpeed})`
       let statusColor = 'rgba(0, 0, 0, 0.5)'
       
       switch (initStatus) {
@@ -169,7 +169,7 @@ export const KeyboardNavigationHelper: FC<KeyboardNavigationHelperProps> = ({
         indicator.remove()
       }
     }
-  }, [isActive, showIndicator, indicatorPosition, customText, initStatus])
+  }, [isActive, showIndicator, indicatorPosition, customText, initStatus, speed, rotationSpeed])
 
   return null
 }

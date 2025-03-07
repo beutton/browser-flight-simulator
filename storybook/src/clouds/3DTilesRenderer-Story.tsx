@@ -53,6 +53,7 @@ import {
   useColorGradingControls,
   useControls,
   useGoogleMapsAPIKeyControls,
+  useKeyboardSpeedControls,
   useLocalDateControls,
   usePovControls,
   useToneMappingControls
@@ -169,6 +170,12 @@ const Scene: FC<SceneProps> = ({
     },
     { collapsed: true }
   )
+  
+  // Add keyboard speed controls
+  const { movementSpeed, rotationSpeed } = useKeyboardSpeedControls(
+    { movementSpeed: 15, rotationSpeed: 1 },
+    { collapsed: false }
+  )
 
   useLayoutEffect(() => {
     new PointOfView(distance, radians(heading), radians(pitch)).decompose(
@@ -213,7 +220,8 @@ const Scene: FC<SceneProps> = ({
       <Globe />
       
       <KeyboardNavigationHelper 
-        speed={15} 
+        speed={movementSpeed} 
+        rotationSpeed={rotationSpeed}
         autoFocus={true}
         showIndicator={true}
         indicatorPosition="bottom-left"
