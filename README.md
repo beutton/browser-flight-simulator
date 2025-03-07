@@ -16,8 +16,9 @@ This a fork of the absolutely amazing project [Geospatial Rendering in Three.js]
 - **FOV slider** - q and e (120 to 20 fov)
 - **70 new cities** - Listed below (note you can find all 3D scanned places by going to Google Earth > Layers > 3D Coverage)
 
-space/c - go up and down
-left click - grab and rotate
+Other controls:
+- space/c - go up and down
+- left click - grab and rotate
 
 # 70 cities in Google 3D
 
