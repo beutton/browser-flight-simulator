@@ -7,7 +7,7 @@
 
 Watch the full video here: https://www.youtube.com/watch?v=iTNqfcdOCow
 
-This a fork of the absolutely amazing project [Geospatial Rendering in Three.js](https://github.com/takram-design-engineering/three-geospatial) by [Shota Matsuda](https://github.com/shotamatsuda)
+This is a fork of the absolutely amazing project [Geospatial Rendering in Three.js](https://github.com/takram-design-engineering/three-geospatial) by [Shota Matsuda](https://github.com/shotamatsuda)
 
 # Enhancements
 
