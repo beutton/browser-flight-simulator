@@ -92,7 +92,7 @@ This a slight fork of the absolutely amazing project [Geospatial Rendering in Th
 1. Sign up for Google Cloud to get a Maps Tiles API, it's free! Then add it to .env: STORYBOOK_GOOGLE_MAP_API_KEY=<your-key>
 2. bun install -g pnpm
 3. pnpm install
-4. pnpm storybook
+4. pnpm storybook (maybe pnpm nx storybook)
 5. http://localhost:4400/
   
 # Geospatial Rendering in Three.js
