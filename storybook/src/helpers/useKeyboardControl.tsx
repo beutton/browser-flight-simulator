@@ -175,7 +175,8 @@ export function useKeyboardControl({
       motionZ.set(space ? speed : c ? -speed : 0)
       
       // Set rotation values based on arrow keys
-      rotationX.set(arrowDown ? rotationSpeed : arrowUp ? -rotationSpeed : 0)
+      // Note: Inverted up/down controls (up arrow tilts down, down arrow tilts up)
+      rotationX.set(arrowUp ? rotationSpeed : arrowDown ? -rotationSpeed : 0)
       rotationY.set(arrowRight ? -rotationSpeed : arrowLeft ? rotationSpeed : 0)
     }
 
@@ -242,17 +243,31 @@ export function useKeyboardControl({
       
       // Handle camera rotation
       if (rotX !== 0 || rotY !== 0) {
-        // Create rotation quaternion from Euler angles
-        rotationEuler.set(
-          rotX * 0.01, // Pitch (up/down)
-          rotY * 0.01, // Yaw (left/right)
-          0,
-          'XYZ'
-        )
-        rotationQuaternion.setFromEuler(rotationEuler)
+        // Get current camera orientation
+        camera.getWorldPosition(position)
+        camera.getWorldDirection(direction)
+        Ellipsoid.WGS84.getSurfaceNormal(position, up)
         
-        // Apply rotation to camera
-        camera.quaternion.premultiply(rotationQuaternion)
+        // Create rotation for looking left/right (around up vector)
+        if (rotY !== 0) {
+          rotationQuaternion.setFromAxisAngle(up, rotY * 0.01)
+          camera.quaternion.premultiply(rotationQuaternion)
+        }
+        
+        // Create rotation for looking up/down (around right vector)
+        if (rotX !== 0) {
+          // Recalculate right vector based on current camera orientation
+          forward
+            .copy(up)
+            .multiplyScalar(direction.dot(up))
+            .subVectors(direction, forward)
+            .normalize()
+          right.crossVectors(forward, up).normalize()
+          
+          rotationQuaternion.setFromAxisAngle(right, rotX * 0.01)
+          camera.quaternion.premultiply(rotationQuaternion)
+        }
+        
         camera.updateMatrixWorld()
       }
 
