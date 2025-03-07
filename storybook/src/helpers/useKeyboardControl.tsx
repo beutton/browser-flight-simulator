@@ -23,6 +23,7 @@ export interface KeyboardControlOptions {
   enabled?: boolean
   autoFocus?: boolean
   fovStep?: number
+  onFovChange?: (fov: number) => void
 }
 
 export function useKeyboardControl({
@@ -30,12 +31,14 @@ export function useKeyboardControl({
   rotationSpeed = 1,
   enabled = true,
   autoFocus = true,
-  fovStep = 5
+  fovStep = 5,
+  onFovChange
 }: KeyboardControlOptions = {}): { isActive: boolean; setActive: (active: boolean) => void } {
   const { gl, camera, controls } = useThree()
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const [isActive, setActive] = useState(false)
   const [isInitialized, setInitialized] = useState(false)
+  const lastFovRef = useRef<number | null>(null)
   
   const motionX = useSpring(0, springOptions)
   const motionY = useSpring(0, springOptions)
@@ -287,8 +290,33 @@ export function useKeyboardControl({
       // Handle FOV change
       if (fov !== 0 && camera.type === 'PerspectiveCamera') {
         const perspectiveCamera = camera as PerspectiveCamera
-        perspectiveCamera.fov = Math.max(10, Math.min(120, perspectiveCamera.fov + fov * 0.1))
-        perspectiveCamera.updateProjectionMatrix()
+        const newFov = Math.max(10, Math.min(120, perspectiveCamera.fov + fov * 0.1))
+        
+        // Only update if FOV actually changed
+        if (perspectiveCamera.fov !== newFov) {
+          perspectiveCamera.fov = newFov
+          perspectiveCamera.updateProjectionMatrix()
+          
+          // Call the onFovChange callback if provided
+          if (onFovChange) {
+            onFovChange(newFov)
+          }
+          
+          // Store the last FOV value
+          lastFovRef.current = newFov
+          
+          // Force update of TilesRenderer by triggering a camera matrix update
+          if (controls && 
+              (controls as { isGlobeControls?: boolean })?.isGlobeControls === true) {
+            try {
+              // This will force the TilesRenderer to recalculate which tiles to load
+              // based on the new FOV
+              camera.updateMatrixWorld(true)
+            } catch (error) {
+              console.warn('Error updating camera matrix:', error)
+            }
+          }
+        }
       }
 
       // Safely check if controls is GlobeControls and has adjustCamera method

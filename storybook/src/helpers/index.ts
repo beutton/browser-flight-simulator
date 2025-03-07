@@ -3,6 +3,7 @@ export { EffectComposer } from './EffectComposer'
 export { HaldLUT } from './HaldLUT'
 export { Stats } from './Stats'
 export { KeyboardNavigationHelper } from './KeyboardNavigationHelper'
+export { FovBasedTileLoader } from './FovBasedTileLoader'
 
 // Hooks
 export { useApplyLocation } from './useApplyLocation'
