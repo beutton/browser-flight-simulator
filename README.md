@@ -1,5 +1,7 @@
 # Browser Flight Simulator
 
+Video here: https://x.com/benbeutton/status/1897931865463365712
+
 This a slight fork of the absolutely amazing project [Geospatial Rendering in Three.js](https://github.com/takram-design-engineering/three-geospatial) by [Shota Matsuda](https://github.com/shotamatsuda)
 
 # Enhancements
