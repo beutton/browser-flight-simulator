@@ -8,6 +8,7 @@ This a slight fork of the absolutely amazing project [Geospatial Rendering in Th
 
 - **Improved movement**: wasd movement is way smoother (can adjust sensitivity in filter menu)
 - **Camera control** - Arrow keys  (can adjust sensitivity in filter menu)
+- **FOV slider** - q and e (120 to 20 fov)
 - **70 cities**
 
 # Setup
