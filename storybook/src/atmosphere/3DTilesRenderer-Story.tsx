@@ -38,18 +38,20 @@ import {
   Normal
 } from '@takram/three-geospatial-effects/r3f'
 
-import { EffectComposer } from '../helpers/EffectComposer'
-import { HaldLUT } from '../helpers/HaldLUT'
-import { googleMapsApiKeyAtom } from '../helpers/states'
-import { Stats } from '../helpers/Stats'
-import { useColorGradingControls } from '../helpers/useColorGradingControls'
-import { useControls } from '../helpers/useControls'
-import { useGoogleMapsAPIKeyControls } from '../helpers/useGoogleMapsAPIKeyControls'
 import {
+  EffectComposer,
+  HaldLUT,
+  KeyboardNavigationHelper,
+  Stats,
+  useColorGradingControls,
+  useControls,
+  useGoogleMapsAPIKeyControls,
   useLocalDateControls,
-  type LocalDateControlsParams
-} from '../helpers/useLocalDateControls'
-import { useToneMappingControls } from '../helpers/useToneMappingControls'
+  usePovControls,
+  useToneMappingControls
+} from '../helpers'
+import { googleMapsApiKeyAtom } from '../helpers/states'
+import type { LocalDateControlsParams } from '../helpers/useLocalDateControls'
 
 const dracoLoader = new DRACOLoader()
 dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/')
@@ -188,6 +190,14 @@ const Scene: FC<SceneProps> = ({
       correctAltitude={correctAltitude}
       photometric={photometric}
     >
+      <KeyboardNavigationHelper 
+        speed={15} 
+        autoFocus={true}
+        showIndicator={true}
+        indicatorPosition="bottom-left"
+        customText="WASD + Space/C to navigate"
+        indicatorDelay={1000}
+      />
       <Sky />
       <Stars data='atmosphere/stars.bin' />
       <Globe />
