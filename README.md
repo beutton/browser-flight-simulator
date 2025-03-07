@@ -9,15 +9,7 @@ This a slight fork of the absolutely amazing project [Geospatial Rendering in Th
 - **Improved movement**: wasd movement is way smoother (can adjust sensitivity in filter menu)
 - **Camera control** - Arrow keys  (can adjust sensitivity in filter menu)
 - **FOV slider** - q and e (120 to 20 fov)
-- **70 new cities** - Listed further below
-
-# Setup
-
-1. Sign up for Google Cloud to get a Maps Tiles API, it's free! Then add it to .env: STORYBOOK_GOOGLE_MAP_API_KEY=<your-key>
-2. bun install -g pnpm
-3. pnpm install
-4. pnpm storybook
-5. http://0.0.0.0:4400/
+- **70 new cities** - Listed below
 
 # 70 cities in Google 3D
 
@@ -95,6 +87,13 @@ This a slight fork of the absolutely amazing project [Geospatial Rendering in Th
 - Lahore
 - Osaka
 
+# Setup
+
+1. Sign up for Google Cloud to get a Maps Tiles API, it's free! Then add it to .env: STORYBOOK_GOOGLE_MAP_API_KEY=<your-key>
+2. bun install -g pnpm
+3. pnpm install
+4. pnpm storybook
+5. http://0.0.0.0:4400/
   
 # Geospatial Rendering in Three.js
 
