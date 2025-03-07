@@ -8,6 +8,7 @@ export interface KeyboardNavigationHelperProps extends KeyboardControlOptions {
   indicatorPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
   customText?: string
   indicatorDelay?: number
+  fovStep?: number
 }
 
 /**
@@ -29,7 +30,8 @@ export const KeyboardNavigationHelper: FC<KeyboardNavigationHelperProps> = ({
   showIndicator = true,
   indicatorPosition = 'bottom-left',
   customText,
-  indicatorDelay = 500
+  indicatorDelay = 500,
+  fovStep = 5
 }) => {
   const { camera, controls } = useThree()
   const [isReady, setIsReady] = useState(false)
@@ -42,7 +44,8 @@ export const KeyboardNavigationHelper: FC<KeyboardNavigationHelperProps> = ({
     speed,
     rotationSpeed,
     enabled: actualEnabled,
-    autoFocus
+    autoFocus,
+    fovStep
   })
 
   // Check if the scene is ready for keyboard controls
@@ -132,7 +135,7 @@ export const KeyboardNavigationHelper: FC<KeyboardNavigationHelperProps> = ({
       }
       
       // Set text and styles based on initialization status and active state
-      let statusText = customText || `WASD + Space/C to fly (speed: ${speed}), Arrow keys to rotate (speed: ${rotationSpeed})`
+      let statusText = customText || `WASD + Space/C to fly (speed: ${speed}), Arrow keys to rotate (speed: ${rotationSpeed}), Q/E to adjust FOV`
       let statusColor = 'rgba(0, 0, 0, 0.5)'
       
       switch (initStatus) {

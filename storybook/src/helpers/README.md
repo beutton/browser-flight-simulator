@@ -65,8 +65,10 @@ return isActive ? <ActiveUI /> : <InactiveUI />
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `speed` | number | 10 | Movement speed |
+| `rotationSpeed` | number | 1 | Rotation speed |
 | `enabled` | boolean | true | Whether keyboard controls are enabled |
 | `autoFocus` | boolean | true | Whether to automatically focus the canvas on mount and click |
+| `fovStep` | number | 5 | Step size for FOV changes |
 
 ### Return Value
 
@@ -85,6 +87,12 @@ The keyboard controls use the following keys:
 - `D` - Move right
 - `Space` - Move up
 - `C` - Move down
+- `Arrow Up` - Look down
+- `Arrow Down` - Look up
+- `Arrow Left` - Look left
+- `Arrow Right` - Look right
+- `Q` - Decrease field of view (zoom in)
+- `E` - Increase field of view (zoom out)
 
 ## Focus Management
 

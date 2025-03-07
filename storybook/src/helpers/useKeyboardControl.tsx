@@ -3,7 +3,7 @@ import { type GlobeControls } from '3d-tiles-renderer'
 import { useSpring } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { useKeyPress } from 'react-use'
-import { Vector3, Quaternion, Euler } from 'three'
+import { Vector3, Quaternion, Euler, PerspectiveCamera } from 'three'
 
 import { Ellipsoid } from '@takram/three-geospatial'
 
@@ -22,13 +22,15 @@ export interface KeyboardControlOptions {
   rotationSpeed?: number
   enabled?: boolean
   autoFocus?: boolean
+  fovStep?: number
 }
 
 export function useKeyboardControl({
   speed = 10,
   rotationSpeed = 1,
   enabled = true,
-  autoFocus = true
+  autoFocus = true,
+  fovStep = 5
 }: KeyboardControlOptions = {}): { isActive: boolean; setActive: (active: boolean) => void } {
   const { gl, camera, controls } = useThree()
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
@@ -40,6 +42,7 @@ export function useKeyboardControl({
   const motionZ = useSpring(0, springOptions)
   const rotationX = useSpring(0, springOptions) // Rotation around X axis (look up/down)
   const rotationY = useSpring(0, springOptions) // Rotation around Y axis (look left/right)
+  const fovChange = useSpring(0, springOptions) // FOV change
 
   // Store key states in refs to avoid re-renders
   const keyStates = useRef({
@@ -52,7 +55,9 @@ export function useKeyboardControl({
     arrowUp: false,
     arrowDown: false,
     arrowLeft: false,
-    arrowRight: false
+    arrowRight: false,
+    q: false,  // q key for decreasing FOV
+    e: false   // e key for increasing FOV
   })
 
   // Set up canvas reference
@@ -144,6 +149,8 @@ export function useKeyboardControl({
         case 'arrowdown': keyStates.current.arrowDown = true; e.preventDefault(); break
         case 'arrowleft': keyStates.current.arrowLeft = true; e.preventDefault(); break
         case 'arrowright': keyStates.current.arrowRight = true; e.preventDefault(); break
+        case 'q': keyStates.current.q = true; e.preventDefault(); break
+        case 'e': keyStates.current.e = true; e.preventDefault(); break
       }
       
       updateMotion()
@@ -161,6 +168,8 @@ export function useKeyboardControl({
         case 'arrowdown': keyStates.current.arrowDown = false; break
         case 'arrowleft': keyStates.current.arrowLeft = false; break
         case 'arrowright': keyStates.current.arrowRight = false; break
+        case 'q': keyStates.current.q = false; break
+        case 'e': keyStates.current.e = false; break
       }
       
       updateMotion()
@@ -168,7 +177,7 @@ export function useKeyboardControl({
 
     // Update motion values based on current key states
     const updateMotion = () => {
-      const { w, a, s, d, space, c, arrowUp, arrowDown, arrowLeft, arrowRight } = keyStates.current
+      const { w, a, s, d, space, c, arrowUp, arrowDown, arrowLeft, arrowRight, q, e } = keyStates.current
       
       motionX.set(d ? speed : a ? -speed : 0)
       motionY.set(w ? speed : s ? -speed : 0)
@@ -178,6 +187,9 @@ export function useKeyboardControl({
       // Note: Inverted up/down controls (up arrow tilts down, down arrow tilts up)
       rotationX.set(arrowUp ? rotationSpeed : arrowDown ? -rotationSpeed : 0)
       rotationY.set(arrowRight ? -rotationSpeed : arrowLeft ? rotationSpeed : 0)
+      
+      // Set FOV change based on q and e keys
+      fovChange.set(e ? fovStep : q ? -fovStep : 0)
     }
 
     // Make canvas focusable
@@ -221,6 +233,7 @@ export function useKeyboardControl({
     const z = motionZ.get()
     const rotX = rotationX.get()
     const rotY = rotationY.get()
+    const fov = fovChange.get()
     
     try {
       // Handle position movement
@@ -269,6 +282,13 @@ export function useKeyboardControl({
         }
         
         camera.updateMatrixWorld()
+      }
+
+      // Handle FOV change
+      if (fov !== 0 && camera.type === 'PerspectiveCamera') {
+        const perspectiveCamera = camera as PerspectiveCamera
+        perspectiveCamera.fov = Math.max(10, Math.min(120, perspectiveCamera.fov + fov * 0.1))
+        perspectiveCamera.updateProjectionMatrix()
       }
 
       // Safely check if controls is GlobeControls and has adjustCamera method
