@@ -23,6 +23,7 @@ export interface KeyboardNavigationHelperProps extends KeyboardControlOptions {
  */
 export const KeyboardNavigationHelper: FC<KeyboardNavigationHelperProps> = ({
   speed = 10,
+  rotationSpeed = 1,
   enabled = true,
   autoFocus = true,
   showIndicator = true,
@@ -39,6 +40,7 @@ export const KeyboardNavigationHelper: FC<KeyboardNavigationHelperProps> = ({
   
   const { isActive } = useKeyboardControl({
     speed,
+    rotationSpeed,
     enabled: actualEnabled,
     autoFocus
   })
@@ -130,7 +132,7 @@ export const KeyboardNavigationHelper: FC<KeyboardNavigationHelperProps> = ({
       }
       
       // Set text and styles based on initialization status and active state
-      let statusText = customText || 'WASD + Space/C to fly'
+      let statusText = customText || 'WASD + Space/C to fly, Arrow keys to rotate camera'
       let statusColor = 'rgba(0, 0, 0, 0.5)'
       
       switch (initStatus) {

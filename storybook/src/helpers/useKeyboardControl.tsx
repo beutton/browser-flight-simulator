@@ -3,7 +3,7 @@ import { type GlobeControls } from '3d-tiles-renderer'
 import { useSpring } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { useKeyPress } from 'react-use'
-import { Vector3 } from 'three'
+import { Vector3, Quaternion, Euler } from 'three'
 
 import { Ellipsoid } from '@takram/three-geospatial'
 
@@ -14,15 +14,19 @@ const direction = new Vector3()
 const up = new Vector3()
 const forward = new Vector3()
 const right = new Vector3()
+const rotationEuler = new Euler()
+const rotationQuaternion = new Quaternion()
 
 export interface KeyboardControlOptions {
   speed?: number
+  rotationSpeed?: number
   enabled?: boolean
   autoFocus?: boolean
 }
 
 export function useKeyboardControl({
   speed = 10,
+  rotationSpeed = 1,
   enabled = true,
   autoFocus = true
 }: KeyboardControlOptions = {}): { isActive: boolean; setActive: (active: boolean) => void } {
@@ -34,6 +38,8 @@ export function useKeyboardControl({
   const motionX = useSpring(0, springOptions)
   const motionY = useSpring(0, springOptions)
   const motionZ = useSpring(0, springOptions)
+  const rotationX = useSpring(0, springOptions) // Rotation around X axis (look up/down)
+  const rotationY = useSpring(0, springOptions) // Rotation around Y axis (look left/right)
 
   // Store key states in refs to avoid re-renders
   const keyStates = useRef({
@@ -42,7 +48,11 @@ export function useKeyboardControl({
     s: false,
     d: false,
     space: false,
-    c: false
+    c: false,
+    arrowUp: false,
+    arrowDown: false,
+    arrowLeft: false,
+    arrowRight: false
   })
 
   // Set up canvas reference
@@ -130,6 +140,10 @@ export function useKeyboardControl({
         case 'd': keyStates.current.d = true; break
         case ' ': keyStates.current.space = true; e.preventDefault(); break
         case 'c': keyStates.current.c = true; break
+        case 'arrowup': keyStates.current.arrowUp = true; e.preventDefault(); break
+        case 'arrowdown': keyStates.current.arrowDown = true; e.preventDefault(); break
+        case 'arrowleft': keyStates.current.arrowLeft = true; e.preventDefault(); break
+        case 'arrowright': keyStates.current.arrowRight = true; e.preventDefault(); break
       }
       
       updateMotion()
@@ -143,6 +157,10 @@ export function useKeyboardControl({
         case 'd': keyStates.current.d = false; break
         case ' ': keyStates.current.space = false; break
         case 'c': keyStates.current.c = false; break
+        case 'arrowup': keyStates.current.arrowUp = false; break
+        case 'arrowdown': keyStates.current.arrowDown = false; break
+        case 'arrowleft': keyStates.current.arrowLeft = false; break
+        case 'arrowright': keyStates.current.arrowRight = false; break
       }
       
       updateMotion()
@@ -150,11 +168,15 @@ export function useKeyboardControl({
 
     // Update motion values based on current key states
     const updateMotion = () => {
-      const { w, a, s, d, space, c } = keyStates.current
+      const { w, a, s, d, space, c, arrowUp, arrowDown, arrowLeft, arrowRight } = keyStates.current
       
       motionX.set(d ? speed : a ? -speed : 0)
       motionY.set(w ? speed : s ? -speed : 0)
       motionZ.set(space ? speed : c ? -speed : 0)
+      
+      // Set rotation values based on arrow keys
+      rotationX.set(arrowDown ? rotationSpeed : arrowUp ? -rotationSpeed : 0)
+      rotationY.set(arrowRight ? -rotationSpeed : arrowLeft ? rotationSpeed : 0)
     }
 
     // Make canvas focusable
@@ -184,7 +206,7 @@ export function useKeyboardControl({
       window.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('keyup', handleKeyUp)
     }
-  }, [enabled, autoFocus, speed, motionX, motionY, motionZ, isActive])
+  }, [enabled, autoFocus, speed, rotationSpeed, motionX, motionY, motionZ, rotationX, rotationY, isActive])
 
   // Apply movement in the animation frame
   useFrame(() => {
@@ -196,25 +218,43 @@ export function useKeyboardControl({
     const x = motionX.get()
     const y = motionY.get()
     const z = motionZ.get()
-    if (x === 0 && y === 0 && z === 0) {
-      return
-    }
-
+    const rotX = rotationX.get()
+    const rotY = rotationY.get()
+    
     try {
-      camera.getWorldPosition(position)
-      camera.getWorldDirection(direction)
-      Ellipsoid.WGS84.getSurfaceNormal(position, up)
-      forward
-        .copy(up)
-        .multiplyScalar(direction.dot(up))
-        .subVectors(direction, forward)
-        .normalize()
-      right.crossVectors(forward, up).normalize()
+      // Handle position movement
+      if (x !== 0 || y !== 0 || z !== 0) {
+        camera.getWorldPosition(position)
+        camera.getWorldDirection(direction)
+        Ellipsoid.WGS84.getSurfaceNormal(position, up)
+        forward
+          .copy(up)
+          .multiplyScalar(direction.dot(up))
+          .subVectors(direction, forward)
+          .normalize()
+        right.crossVectors(forward, up).normalize()
 
-      camera.position
-        .add(right.multiplyScalar(x))
-        .add(forward.multiplyScalar(y))
-        .add(up.multiplyScalar(z))
+        camera.position
+          .add(right.multiplyScalar(x))
+          .add(forward.multiplyScalar(y))
+          .add(up.multiplyScalar(z))
+      }
+      
+      // Handle camera rotation
+      if (rotX !== 0 || rotY !== 0) {
+        // Create rotation quaternion from Euler angles
+        rotationEuler.set(
+          rotX * 0.01, // Pitch (up/down)
+          rotY * 0.01, // Yaw (left/right)
+          0,
+          'XYZ'
+        )
+        rotationQuaternion.setFromEuler(rotationEuler)
+        
+        // Apply rotation to camera
+        camera.quaternion.premultiply(rotationQuaternion)
+        camera.updateMatrixWorld()
+      }
 
       // Safely check if controls is GlobeControls and has adjustCamera method
       if (controls && 
